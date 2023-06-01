@@ -9,9 +9,10 @@ public class GameInputs : MonoBehaviour
 {
 	[SerializeField] private Joystick movementJoystick;
 
-	[SerializeField] private Button shootButton;
+	[SerializeField] private HoldableButton shootButton;
 
-	public event EventHandler onShoot;
+	public event EventHandler onShootStarted;
+	public event EventHandler onShootEnded;
 
 	public static GameInputs Instance { get; private set; }
 
@@ -26,10 +27,26 @@ public class GameInputs : MonoBehaviour
 
 		Instance = this;
 
-		shootButton.onClick.AddListener(() =>
-		{
-			onShoot?.Invoke(this, EventArgs.Empty);
-		});
+		shootButton.onClickedStarted += ShootButton_onClickStarted;
+		shootButton.onClickedFinished += ShootButton_onClickFinished;
+
+	}
+
+	private void ShootButton_onClickFinished(object sender, EventArgs e)
+	{
+		Debug.Log("Shooting finished");
+		onShootEnded?.Invoke(this, EventArgs.Empty);
+	}
+
+	private void ShootButton_onClickStarted(object sender, EventArgs e)
+	{
+		Debug.Log("Shooting started");
+		onShootStarted?.Invoke(this, EventArgs.Empty);
+	}
+
+	public bool IsShooting()
+	{
+		return shootButton.isPressed;
 	}
 
 	public Vector2 GetMovement()

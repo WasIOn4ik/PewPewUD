@@ -62,7 +62,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -168,15 +168,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\u0417\u043E\u043C\u0431\u0438_0"
+      name: Zombie_Head
       rect:
         serializedVersion: 2
         x: 0
         y: 13
         width: 9
         height: 17
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.3830806, y: 0.082684405}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,7 +189,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u0417\u043E\u043C\u0431\u0438_1"
+      name: Zombie_Body
       rect:
         serializedVersion: 2
         x: 11
@@ -210,15 +210,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u0417\u043E\u043C\u0431\u0438_2"
+      name: Zombie_Hand
       rect:
         serializedVersion: 2
         x: 31
         y: 16
         width: 3
         height: 14
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.47736993, y: 0.9267288}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,15 +231,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u0417\u043E\u043C\u0431\u0438_3"
+      name: Zombie_Leg
       rect:
         serializedVersion: 2
         x: 37
         y: 5
         width: 4
         height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.49999905, y: 0.9928717}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,15 +252,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "\u0417\u043E\u043C\u0431\u0438_4"
+      name: Zombie_Arm
       rect:
         serializedVersion: 2
         x: 28
         y: 0
         width: 7
         height: 15
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.63577706, y: 0.9322245}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -283,11 +283,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "\u0417\u043E\u043C\u0431\u0438_0": 7117401074472609237
-      "\u0417\u043E\u043C\u0431\u0438_1": -9077934328391064956
-      "\u0417\u043E\u043C\u0431\u0438_2": -4436161977106058220
-      "\u0417\u043E\u043C\u0431\u0438_3": 2004682317781361897
-      "\u0417\u043E\u043C\u0431\u0438_4": -4031785122171737557
+      Zombie_Arm: -4031785122171737557
+      Zombie_Body: -9077934328391064956
+      Zombie_Hand: -4436161977106058220
+      Zombie_Head: 7117401074472609237
+      Zombie_Leg: 2004682317781361897
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

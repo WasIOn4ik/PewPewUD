@@ -30,7 +30,6 @@ namespace PewUI
 				Input = tempInput;
 				Input = Input.magnitude > 1f ? Input.normalized : Input;
 
-				Debug.Log($"{xSize} , {ySize}, {tempInput}, {Input}");
 				stick.anchoredPosition = new Vector2(Input.x * xSize, Input.y * ySize);
 			}
 		}
