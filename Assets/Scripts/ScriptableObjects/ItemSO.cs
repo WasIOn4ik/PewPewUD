@@ -1,17 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Pew/Item")]
-public class ItemSO : ScriptableObject
+namespace PewStorage
 {
-	[Header("Service")]
-	public int id;
-	public string title;
+	public enum ItemType
+	{
+		Usable,
+		Weapon,
+		Armor,
+		Spawnable,
+		Craft
+	}
 
-	[Header("Visual")]
-	public Sprite icon;
+	[CreateAssetMenu(menuName = "Pew/Item")]
+	public class ItemSO : ScriptableObject
+	{
+		[Header("Service")]
+		public int id;
+		public string title;
 
-	[Header("Properties")]
-	public bool bStackable;
+		[Header("ItemVisual")]
+		public Sprite inventoryIcon;
+
+		[Header("ItemProperties")]
+		public bool bStackable;
+		public ItemType itemType = ItemType.Craft;
+
+		public ItemStack GetStack()
+		{
+			return new ItemStack() { itemBase = this, count = 1 };
+		}
+	}
 }

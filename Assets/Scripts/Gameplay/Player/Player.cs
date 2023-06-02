@@ -1,156 +1,188 @@
-using PewCore;
+using PewCombat;
+using PewStorage;
+using PewUI;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Windows;
 
-public class Player : MonoBehaviour, IDamageable
+namespace PewCore
 {
-	#region Constants
-
-	private const string LEGS_IDLE = "Legs_Idle";
-	private const string LEGS_WALK = "Legs_Walk";
-	private const string UPPER_IDLE = "Upper_Idle";
-	private const string UPPER_WALK = "Upper_Walk";
-	private const string UPPER_IK = "Upper_IK";
-
-	#endregion
-
-	#region Variables
-
-	[Header("Components")]
-	[SerializeField] private Transform visualTransform;
-	[SerializeField] private Transform weaponSocket;
-	[SerializeField] private Animator animator;
-	[SerializeField] private CombatSystem combatSystem;
-	[SerializeField] private HealthBar healthBar;
-
-	[Header("Properties")]
-	[SerializeField] private float velocity = 10f;
-	[SerializeField] private float maxHP = 100f;
-
-	private IPlayerTarget currentTarget;
-
-	public event EventHandler<IDamageable.DamageEventArgs> onHpRatioChanged;
-
-	private float currentHP;
-
-	#endregion
-
-	#region UnityMessages
-
-	void Start()
+	public class Player : MonoBehaviour, IDamageable
 	{
-		healthBar.Init(this);
-		combatSystem.OnHaveTargetChanged += CombatSystem_OnHaveTargetChanged;
-		GameInputs.Instance.onShootStarted += StartShoot;
-		GameInputs.Instance.onShootEnded += EndShoot;
+		#region Constants
 
-		SetUpperIK(true);
-	}
+		private const string LEGS_IDLE = "Legs_Idle";
+		private const string LEGS_WALK = "Legs_Walk";
+		private const string UPPER_IDLE = "Upper_Idle";
+		private const string UPPER_WALK = "Upper_Walk";
+		private const string UPPER_IK = "Upper_IK";
 
-	private void CombatSystem_OnHaveTargetChanged(object sender, CombatSystem.HaveTargetEventArgs e)
-	{
-		currentTarget = e.target;
-		UpdateHandsPosition();
-	}
+		#endregion
 
-	void Update()
-	{
-		Vector2 input = GameInputs.Instance.GetMovement();
-		Vector2 handledInput = input * Time.deltaTime * velocity;
+		#region Variables
 
-		HandleRotation(input);
+		[Header("Components")]
+		[SerializeField] private Transform visualTransform;
+		[SerializeField] private Transform weaponSocket;
+		[SerializeField] private Animator animator;
+		[SerializeField] private CombatSystem combatSystem;
+		[SerializeField] private HealthBar healthBar;
+		[SerializeField] private Rigidbody2D r2d;
 
-		HandleAnimation(input);
+		[Header("Properties")]
+		[SerializeField] private float velocity = 10f;
+		[SerializeField] private float maxHP = 100f;
 
-		UpdateHandsPosition();
+		private IPlayerTarget currentTarget;
 
-		transform.position += new Vector3(handledInput.x, handledInput.y, 0);
-	}
+		public event EventHandler<DamageEventArgs> onHpRatioChanged;
 
-	#endregion
+		public static Player Instance { get; private set; }
+		public CombatSystem Combat { get { return combatSystem; } }
 
-	#region Callbacks
+		private float currentHP;
 
-	private void StartShoot(object sender, EventArgs e)
-	{
-		combatSystem.Shoot();
-	}
+		#endregion
 
-	private void EndShoot(object sender, EventArgs e)
-	{
-		combatSystem.EndShoot();
-	}
+		#region UnityMessages
 
-	#endregion
-
-	#region Functions
-
-	private void UpdateHandsPosition()
-	{
-		if (visualTransform.localScale.x == 1)
-			weaponSocket.right = currentTarget != null ? currentTarget.GetPosition() - weaponSocket.position : Vector3.right;
-		else
-			weaponSocket.right = currentTarget != null ? weaponSocket.position - currentTarget.GetPosition() : Vector3.right;
-
-	}
-
-	private void HandleRotation(Vector2 input)
-	{
-		float rotationThreshold = 0.1f;
-
-		if (input.x > rotationThreshold)
-			visualTransform.localScale = Vector3.one;
-		else if (input.x < -rotationThreshold)
-			visualTransform.localScale = new Vector3(-1, 1, 1);
-	}
-
-	private void HandleAnimation(Vector2 input)
-	{
-		float threshold = 0.05f;
-
-		if (input.magnitude > threshold)
+		private void Awake()
 		{
-			SetLegsWalk(true);
-		}
-		else
-		{
-			SetLegsWalk(false);
-		}
-	}
+			if (Instance != null)
+			{
+				Destroy(gameObject);
+				return;
+			}
 
-	private void SetLegsWalk(bool val)
-	{
-		animator.SetBool(LEGS_IDLE, !val);
-		animator.SetBool(LEGS_WALK, val);
-	}
+			Instance = this;
 
-	private void SetUpperIK(bool ik)
-	{
-		animator.SetBool(UPPER_IK, ik);
-		animator.SetBool(UPPER_IDLE, !ik);
-	}
+			currentHP = maxHP;
 
-	public void ApplyDamage(float damage)
-	{
-		currentHP -= damage;
-
-		if (currentHP <= 0)
-		{
-			HandleDeath();
-			return;
+			healthBar.Init(this);
 		}
 
-		onHpRatioChanged?.Invoke(this, new IDamageable.DamageEventArgs() { hpRatio = currentHP / maxHP });
+		private void Start()
+		{
+			healthBar.Init(this);
+			combatSystem.OnHaveTargetChanged += CombatSystem_OnHaveTargetChanged;
+			GameInputs.Instance.onShootStarted += StartShoot;
+			GameInputs.Instance.onShootEnded += EndShoot;
+
+			int weaponID = GameBase.Instance.Stats.GetEquippedWeaponID();
+
+			if (weaponID != 0)
+			{
+				var weap = GameBase.Instance.ItemsLibrary.GetItem(weaponID) as WeaponSO;
+				GameBase.Instance.Inventory.EquipWeapon(weap);
+			}
+
+			SetUpperIK(true);
+		}
+
+		private void CombatSystem_OnHaveTargetChanged(object sender, CombatSystem.HaveTargetEventArgs e)
+		{
+			currentTarget = e.target;
+			UpdateHandsPosition();
+		}
+
+		void Update()
+		{
+			Vector2 input = GameInputs.Instance.GetMovement();
+			Vector2 handledInput = input * Time.deltaTime * velocity;
+
+			HandleRotation(input);
+
+			HandleAnimation(input);
+
+			UpdateHandsPosition();
+
+			r2d.MovePosition(transform.position + new Vector3(handledInput.x, handledInput.y, 0));
+		}
+
+		#endregion
+
+		#region Callbacks
+
+		private void StartShoot(object sender, EventArgs e)
+		{
+			combatSystem.Shoot();
+		}
+
+		private void EndShoot(object sender, EventArgs e)
+		{
+			combatSystem.EndShoot();
+		}
+
+		#endregion
+
+		#region Functions
+
+		private void UpdateHandsPosition()
+		{
+			if (visualTransform.localScale.x == 1)
+				weaponSocket.right = currentTarget != null ? currentTarget.GetPosition() - weaponSocket.position : Vector3.right;
+			else
+				weaponSocket.right = currentTarget != null ? weaponSocket.position - currentTarget.GetPosition() : Vector3.right;
+
+		}
+
+		private void HandleRotation(Vector2 input)
+		{
+			float rotationThreshold = 0.1f;
+
+			if (input.x > rotationThreshold)
+				visualTransform.localScale = Vector3.one;
+			else if (input.x < -rotationThreshold)
+				visualTransform.localScale = new Vector3(-1, 1, 1);
+		}
+
+		private void HandleAnimation(Vector2 input)
+		{
+			float threshold = 0.05f;
+
+			if (input.magnitude > threshold)
+			{
+				SetLegsWalk(true);
+			}
+			else
+			{
+				SetLegsWalk(false);
+			}
+		}
+
+		private void SetLegsWalk(bool val)
+		{
+			animator.SetBool(LEGS_IDLE, !val);
+			animator.SetBool(LEGS_WALK, val);
+		}
+
+		private void SetUpperIK(bool ik)
+		{
+			animator.SetBool(UPPER_IK, ik);
+			animator.SetBool(UPPER_IDLE, !ik);
+		}
+
+		public void ApplyDamage(float damage)
+		{
+			currentHP -= damage;
+
+			if (currentHP <= 0)
+			{
+				HandleDeath();
+				return;
+			}
+			else if (currentHP > maxHP)
+			{
+				currentHP = maxHP;
+			}
+
+			onHpRatioChanged?.Invoke(this, new DamageEventArgs() { hpRatio = currentHP / maxHP });
+		}
+
+		private void HandleDeath()
+		{
+			GameBase.Instance.Menus.OpenUI<DeathUI>(MenuType.Death);
+		}
+
+		#endregion
 	}
-
-	private void HandleDeath()
-	{
-
-	}
-
-	#endregion
 }

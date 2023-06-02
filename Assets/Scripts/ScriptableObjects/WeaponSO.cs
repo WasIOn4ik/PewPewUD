@@ -1,24 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
+using PewCombat;
+using PewCore;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Pew/Weapon")]
-public class WeaponSO : ScriptableObject
+namespace PewStorage
 {
-	[Header("Service")]
-	public int id;
-	public string title;
+	[CreateAssetMenu(menuName = "Pew/Weapon")]
+	public class WeaponSO : UsableSO
+	{
+		public WeaponSO()
+		{
+			itemType = ItemType.Weapon;
+			bStackable = false;
+		}
 
-	[Header("Visual")]
-	public Sprite weaponSprite;
-	public Sprite weaponBulletSprite;
-	public Vector3 frontHandSocketPos;
-	public Vector3 backHandSocketPos;
-	public bool bUseBackHand;
+		[Header("WeaponVIsual")]
+		public Sprite weaponSprite;
+		public Sprite bulletSprite;
+		public Vector3 frontHandSocketPos;
+		public Vector3 backHandSocketPos;
+		public Weapon weaponPrefab;
 
-	[Header("Properties")]
-	public float damage;
-	public bool bAuto;
-	public float fireRate;
-	public float bulletVelocity;
+		[Header("WeaponProperties")]
+		public float damage;
+		public bool bAuto;
+		public float fireRate;
+		public float bulletVelocity;
+		public bool bPenetration;
+
+		public override void Interact(Player player)
+		{
+			base.Interact(player);
+			GameBase.Instance.Inventory.EquipWeapon(this);
+		}
+	}
 }

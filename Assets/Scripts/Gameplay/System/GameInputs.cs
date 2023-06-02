@@ -1,56 +1,73 @@
 using PewUI;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameInputs : MonoBehaviour
+namespace PewCore
 {
-	[SerializeField] private Joystick movementJoystick;
-
-	[SerializeField] private HoldableButton shootButton;
-
-	public event EventHandler onShootStarted;
-	public event EventHandler onShootEnded;
-
-	public static GameInputs Instance { get; private set; }
-
-	private void Awake()
+	public class GameInputs : MonoBehaviour
 	{
-		if (Instance != null)
+		#region Variables
+
+		[SerializeField] private Joystick movementJoystick;
+
+		[SerializeField] private HoldableButton shootButton;
+
+		[SerializeField] private Button backpackButton;
+
+		public event EventHandler onShootStarted;
+		public event EventHandler onShootEnded;
+
+		public static GameInputs Instance { get; private set; }
+
+		#endregion
+
+		#region UnityMessages
+
+		private void Awake()
 		{
-			Debug.LogError("Duplicating GamInputs");
-			Destroy(gameObject);
-			return;
+			if (Instance != null)
+			{
+				Debug.LogError("Duplicating GamInputs");
+				Destroy(gameObject);
+				return;
+			}
+
+			Instance = this;
+
+			shootButton.onClickedStarted += ShootButton_onClickStarted;
+			shootButton.onClickedFinished += ShootButton_onClickFinished;
+
+			backpackButton.onClick.AddListener(() =>
+			{
+				var bp = GameBase.Instance.Menus.OpenUI<BackpackUI>(MenuType.Backpack);
+			});
 		}
 
-		Instance = this;
+		#endregion
 
-		shootButton.onClickedStarted += ShootButton_onClickStarted;
-		shootButton.onClickedFinished += ShootButton_onClickFinished;
+		#region Functions
 
-	}
+		private void ShootButton_onClickFinished(object sender, EventArgs e)
+		{
+			onShootEnded?.Invoke(this, EventArgs.Empty);
+		}
 
-	private void ShootButton_onClickFinished(object sender, EventArgs e)
-	{
-		Debug.Log("Shooting finished");
-		onShootEnded?.Invoke(this, EventArgs.Empty);
-	}
+		private void ShootButton_onClickStarted(object sender, EventArgs e)
+		{
+			onShootStarted?.Invoke(this, EventArgs.Empty);
+		}
 
-	private void ShootButton_onClickStarted(object sender, EventArgs e)
-	{
-		Debug.Log("Shooting started");
-		onShootStarted?.Invoke(this, EventArgs.Empty);
-	}
+		public bool IsShooting()
+		{
+			return shootButton.isPressed;
+		}
 
-	public bool IsShooting()
-	{
-		return shootButton.isPressed;
-	}
+		public Vector2 GetMovement()
+		{
+			return movementJoystick.Input;
+		}
 
-	public Vector2 GetMovement()
-	{
-		return movementJoystick.Input;
+		#endregion
 	}
 }

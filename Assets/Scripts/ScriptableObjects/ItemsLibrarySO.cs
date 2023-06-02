@@ -1,10 +1,23 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Pew/ItemsLibrary")]
-public class ItemsLibrarySO : ScriptableObject
+namespace PewStorage
 {
-	public List<ItemSO> items;
-	public List<WeaponSO> weapons;
+	[CreateAssetMenu(menuName = "Pew/ItemsLibrary")]
+	public class ItemsLibrarySO : ScriptableObject
+	{
+		public List<ItemSO> items;
+
+		public ItemSO GetItem(int id)
+		{
+			foreach (var item in items)
+			{
+				if (item.id == id)
+				{
+					return item;
+				}
+			}
+			return null;
+		}
+	}
 }

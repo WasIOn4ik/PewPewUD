@@ -12,14 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11abcdc0b9ea3194d97eccf4132e2721, type: 3}
   m_Name: AK74
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1
   title: AK74
+  inventoryIcon: {fileID: 21300000, guid: 6532bc2c52f179142a7333cc0f5faeda, type: 3}
+  bStackable: 0
+  itemType: 1
   weaponSprite: {fileID: 21300000, guid: 6532bc2c52f179142a7333cc0f5faeda, type: 3}
-  weaponBulletSprite: {fileID: 21300000, guid: a161155aa99289c41ac4e61aa6122189, type: 3}
+  bulletSprite: {fileID: 21300000, guid: a161155aa99289c41ac4e61aa6122189, type: 3}
   frontHandSocketPos: {x: 0, y: 0, z: 0}
   backHandSocketPos: {x: 1.25, y: 0.45, z: 0}
-  bUseBackHand: 1
+  weaponPrefab: {fileID: 1947002232677045984, guid: d131f659281e0d447952144a0b16bcb7, type: 3}
   damage: 3
   bAuto: 1
-  fireRate: 300
-  bulletVelocity: 5
+  fireRate: 400
+  bulletVelocity: 6
+  bPenetration: 1
