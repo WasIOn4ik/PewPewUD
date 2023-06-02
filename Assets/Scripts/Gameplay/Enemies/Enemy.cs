@@ -59,7 +59,6 @@ namespace PewCombat
 
 			if (player)
 			{
-				Debug.Log("FoundPlayer");
 				playerTarget = player;
 				bAttacking = false;
 			}

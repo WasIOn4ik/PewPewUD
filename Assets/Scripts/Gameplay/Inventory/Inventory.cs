@@ -50,7 +50,6 @@ namespace PewStorage
 
 		public void EquipWeapon(WeaponSO weaponSO)
 		{
-			Debug.Log("Equipping");
 			var combat = Player.Instance.Combat;
 			if (combat.CurrentWeapon)
 			{
