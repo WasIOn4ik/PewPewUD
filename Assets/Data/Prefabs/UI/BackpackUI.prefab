@@ -409,7 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuType: 0
-  bCacheOnClose: 1
+  bCacheOnClose: 0
   itemsContent: {fileID: 3480474364673736380}
   destroyButton: {fileID: 7592645121688424253}
   dropButton: {fileID: 6269366143592007523}
