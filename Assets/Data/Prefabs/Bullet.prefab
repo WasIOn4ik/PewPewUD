@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSprite: {fileID: 7469600097899270561}
+  r2d: {fileID: 0}
 --- !u!61 &991295664486025613
 BoxCollider2D:
   m_ObjectHideFlags: 0

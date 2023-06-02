@@ -26,21 +26,27 @@ namespace PewUI
 		{
 			foreach (var m in cachedMenus)
 			{
-				if (m.menuType == menu)
+				if(m)
 				{
-					m.Show();
-					return m as T;
+					if (m.menuType == menu)
+					{
+						m.Show();
+						return m as T;
+					}
 				}
 			}
 
 			foreach (var m in menus)
 			{
-				if (m.menuType == menu)
+				if(m)
 				{
-					MenuBase newMenu = Instantiate(m);
-					cachedMenus.Add(newMenu);
-					newMenu.Show();
-					return newMenu as T;
+					if (m.menuType == menu)
+					{
+						MenuBase newMenu = Instantiate(m);
+						cachedMenus.Add(newMenu);
+						newMenu.Show();
+						return newMenu as T;
+					}
 				}
 			}
 
