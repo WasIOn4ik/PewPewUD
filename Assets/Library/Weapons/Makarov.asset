@@ -25,5 +25,5 @@ MonoBehaviour:
   damage: 4
   bAuto: 0
   fireRate: 150
-  bulletVelocity: 4
+  bulletVelocity: 16
   bPenetration: 0

@@ -224,12 +224,14 @@ MonoBehaviour:
   healthBar: {fileID: 8675409690990222115}
   lootComponent: {fileID: 5780754397024023651}
   animator: {fileID: 6774052913019352790}
+  r2d: {fileID: 1666353605020917950}
   aimTarget: {fileID: 8135377016844211864}
   maxHP: 10
-  velocity: 2.5
+  velocity: 4
   attackDistance: 3
   damage: 4
   minimalDistance: 0.025
+  exp: 75
 --- !u!61 &8135377016306581748
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -276,7 +278,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!114 &5780754397024023651
 MonoBehaviour:
   m_ObjectHideFlags: 0

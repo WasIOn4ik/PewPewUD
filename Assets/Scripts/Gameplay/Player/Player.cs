@@ -84,10 +84,10 @@ namespace PewCore
 			UpdateHandsPosition();
 		}
 
-		void Update()
+		void FixedUpdate()
 		{
 			Vector2 input = GameInputs.Instance.GetMovement();
-			Vector2 handledInput = input * Time.deltaTime * velocity;
+			Vector2 handledInput = input * Time.fixedDeltaTime * velocity;
 
 			HandleRotation(input);
 

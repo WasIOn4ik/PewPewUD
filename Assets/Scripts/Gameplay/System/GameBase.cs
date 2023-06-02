@@ -31,7 +31,7 @@ namespace PewCore
 	{
 		#region Constants
 
-		public const string SAVE_FILE = "Save.pew";
+		public const string SAVE_FILE = "/Save.pew";
 
 		#endregion
 
@@ -72,11 +72,20 @@ namespace PewCore
 			Menus.ClearCached();
 
 			Application.quitting += Application_quitting;
+			Application.focusChanged += Application_focusChanged;
+			Application.targetFrameRate = 60;
 		}
 
 		#endregion
 
 		#region Callbacks
+		private void Application_focusChanged(bool obj)
+		{
+			if (!obj)
+			{
+				SaveData();
+			}
+		}
 
 		private void Application_quitting()
 		{

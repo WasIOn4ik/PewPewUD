@@ -22,6 +22,7 @@ namespace PewCombat
 		[SerializeField] private HealthBar healthBar;
 		[SerializeField] private LootComponent lootComponent;
 		[SerializeField] private Animator animator;
+		[SerializeField] private Rigidbody2D r2d;
 
 		[Header("Properties")]
 		[SerializeField] private Transform aimTarget;
@@ -75,7 +76,7 @@ namespace PewCombat
 			}
 		}
 
-		private void Update()
+		private void FixedUpdate()
 		{
 			MoveToPlayer();
 		}
@@ -130,7 +131,7 @@ namespace PewCombat
 
 				if (dir.magnitude > minimalDistance)
 				{
-					transform.position += dir.normalized * velocity * Time.deltaTime;
+					r2d.MovePosition(transform.position + dir.normalized * velocity * Time.fixedDeltaTime);
 				}
 			}
 			else

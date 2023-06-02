@@ -1395,7 +1395,7 @@ MonoBehaviour:
   combatSystem: {fileID: 2319850951061891305}
   healthBar: {fileID: 3992903284023809778}
   r2d: {fileID: 1791250197149520386}
-  velocity: 25
+  velocity: 12
   maxHP: 100
 --- !u!95 &1791250197149520399
 Animator:
