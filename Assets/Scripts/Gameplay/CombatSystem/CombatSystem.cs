@@ -38,8 +38,8 @@ namespace PewCombat
 				currentWeapon.transform.localPosition = Vector3.zero;
 				currentWeapon.transform.localRotation = Quaternion.identity;
 				currentWeapon.transform.localScale = Vector3.one;
-				frontHandController.transform.localPosition = currentWeapon.WeaponBase.frontHandSocketPos;
-				backHandController.transform.localPosition = currentWeapon.WeaponBase.backHandSocketPos;
+				frontHandController.localPosition = currentWeapon.WeaponBase.frontHandSocketPos;
+				backHandController.localPosition = currentWeapon.WeaponBase.backHandSocketPos;
 				GameBase.Instance.Stats.SetEquippedWeaponID(currentWeapon.WeaponBase.id);
 			}
 		}
